@@ -11,3 +11,4 @@ seaborn>=0.11.0
 jupyter>=1.0.0
 category_encoders>=2.3.0
 ipykernel
+keras
