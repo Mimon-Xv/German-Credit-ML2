@@ -145,7 +145,7 @@ def create_rf_ensemble(df_train, df_test, n_models=10, multiplier=7):
         submission = submission[['Id', 'Risk']]
 
     # Save submission
-    submission_path = f'../03. Submissions/rf_ensemble_n{n_models}_m{multiplier}_t{best_threshold:.3f}.csv'
+    submission_path = f'../03. Submissions/s_rf_ensemble_n{n_models}_m{multiplier}_t{best_threshold:.3f}.csv'
     submission.to_csv(submission_path, index=False)
 
     elapsed_time = time.time() - start_time
