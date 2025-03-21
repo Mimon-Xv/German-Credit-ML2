@@ -6,6 +6,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.impute import SimpleImputer
 import os
 
 # Ensure only submissions directory exists
@@ -96,11 +97,17 @@ def run_optimized_rf(df_train, df_test, multiplier=7, use_feature_engineering=Fa
     numeric_features = X_train.select_dtypes(include=[np.number]).columns.tolist()
     categorical_features = X_train.select_dtypes(include=[object]).columns.tolist()
 
-    # Create preprocessing pipeline
+    # Create preprocessing pipeline with imputation
     preprocessor = ColumnTransformer(
         transformers=[
-            ('num', StandardScaler(), numeric_features),
-            ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
+            ('num', Pipeline([
+                ('imputer', SimpleImputer(strategy='mean')),
+                ('scaler', StandardScaler())
+            ]), numeric_features),
+            ('cat', Pipeline([
+                ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+                ('encoder', OneHotEncoder(handle_unknown='ignore'))
+            ]), categorical_features)
         ]
     )
 
